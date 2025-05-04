@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block page %}
+
+<div class="container d-flex justify-content-center align-items-center" style="height: 55vh;">
+    <div class="row row-cols-1">
+        <div class="col text-center">
+            <div class="container">
+                <form class="cardy" action="" method="post">
+                    <a class="login">Register Form</a>
+                    <div class="inputBox">
+                        <input class="username input"  id="username" name="username" required>
+                        <span class="user">Username</span>
+                    </div>
+
+                    <div class="inputBox">
+                        <input class="password input"  id="password" name="password" required>
+                        <span>Password</span>
+                    </div>
+
+                    <button class="enter" type="submit">Register</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

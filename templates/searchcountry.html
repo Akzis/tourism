@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% from 'macroses.html' import place as PlaceMacro %}
+
+{% block page %}
+<head>
+    <title>Country</title>
+
+    <style>
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+        .left-panel {
+            width: 40%;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 15px;
+        }
+        .map-panel {
+            flex-grow: 1;
+            padding: 15px;
+        }
+        .countries-container {
+            display: flex;
+            gap: 10px;
+        }
+        .country-card {
+            text-decoration: none;
+            color: inherit;
+        }
+        .flip {
+            height: 150px;
+            perspective: 1000px;
+        }
+        .front, .back {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .back {
+            background-color: #333;
+        }
+        .text-shadow {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .left-panel, .map-panel {
+                width: 100%;
+                padding: 10px;
+                height: auto;
+            }
+            .flip {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div class="left-panel">
+        <div class="countries-container">
+            <a href="/countrysearchplace/russia/" class="country-card">
+                <div class="flip">
+                    <div class="front" style="background-image: url(https://7d9e88a8-f178-4098-bea5-48d960920605.selcdn.net/655be867-da22-4c89-909e-8311a98e3a1b/-/format/webp/-/resize/1300x/)">
+                        <h1 class="text-shadow">Россия</h1>
+                    </div>
+                    <div class="back">
+                        <h2>Россия</h2>
+                    </div>
+                </div>
+            </a>
+            {% for country in countries %}
+                <a href="/countrysearchplace/{{country.id}}/" class="country-card">
+                    <div class="flip">
+                        <div class="front" style="background-image: url({{ country.image }})">
+                            <h1 class="text-shadow">{{ country.name }}</h1>
+                        </div>
+                        <div class="back">
+                            <h2>{{ country.name }}</h2>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+
+
+    </div>
+
+    <div class="map-panel">
+        <a href="{{ url_for('clear_session') }}">Очистить сессию</a><br>
+        {% for place in visited_places %}
+            {{place.name}}<br>
+            {{place.latitude}}, {{place.longitude}}<br>
+        {% endfor %}
+    </div>
+        <div id="map" style="width: 100%; height: 500px"></div>
+    </div>
+</div>
+
+<script>
+    const myAPIKey = "1ad90f2bfcbc4965a0c387f38c33b8a0";
+    const waypoints = [
+        {% for place in visited_places %}
+            [{{place.latitude}},{{place.longitude}}],
+        {% endfor %}
+    ];
+
+    const url = `https://api.geoapify.com/v1/routing?waypoints=${waypoints.map((point) => point.join(',')).join('|')}&mode=drive&details=instruction_details&apiKey=${myAPIKey}`;
+
+    async function initMap() {
+        await ymaps3.ready;
+        const {YMap, YMapDefaultSchemeLayer, YMapFeature, YMapDefaultFeaturesLayer} = ymaps3;
+
+        const map = new YMap(document.getElementById('map'), {
+            location: {
+                center: [{% if visited_places[0] %} {{visited_places[0].longitude}},{{visited_places[0].latitude}} {% else %}37.588144, 55.733842{%endif%}],
+                zoom: 10
+            }
+        });
+
+        map.addChild(new YMapDefaultSchemeLayer());
+        map.addChild(new YMapDefaultFeaturesLayer());
+        return map;
+    }
+
+    fetch(url)
+        .then(res => res.json())
+        .then(async (result) => {
+            const map = await initMap();
+            const {YMapFeature} = ymaps3;
+            const style = { stroke: [{color: '#196dff', width: 3}] };
+
+            result.features.forEach((feature) => {
+                const _feature = new YMapFeature({
+                    geometry: feature.geometry,
+                    style,
+                });
+                map.addChild(_feature);
+            });
+        })
+        .catch(error => console.log(error));
+</script>
+{% endblock %}

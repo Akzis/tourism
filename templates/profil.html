@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block page %}
+{% from 'macroses.html' import place as PlaceMacro %}
+
+
+<h1>Здравствуй пользователь<h1/>
+     <a class="nav-link" href="{{ url_for('users_blueprint.logout') }}">Logout</a>
+
+
+
+
+<h2>Лайкнутые места</h2>
+{# <h4>{{ like.place_id }}</h4> #}
+
+
+{% endblock %}

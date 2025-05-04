@@ -1,0 +1,89 @@
+
+{% extends 'base.html' %}
+
+{% from 'macroses.html' import place as PlaceMacro %}
+
+{% block page %}
+    {# {{ PlaceMacro(place) }} #}
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename="index.css") }}"> 
+    {# <div style="height: 500px; padding: 90px; display: grid; position: relative; grid-template-columns: repeat(2, 1fr); margin-bottom: 50px ;">
+        <div class="content country-name">
+            <h2>{{ region.name }}</h2>
+        </div>
+        <h2 class="my-text" > {{ region.description }}</h2>
+        <img class="" src="{{region.image}}" alt="{{ region.name }}" style="z-index: -1; position: absolute; top: 0; left: 0; height: 100%; width: 100%; object-fit: cover;">
+    </div> #}
+
+
+
+
+        <style>
+            .section {
+                background-size: cover;
+                background-position: center center;
+                padding: 90px;
+                position: relative;
+            }
+            .section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgb(0 0 0 / 0.4);
+                z-index: 0;
+            }
+        </style>
+
+        <div class="section" style="background-image: url({{ region.image }});">
+            <div class="container z-2 position-relative">
+                <div class="row row-cols-1 row-cols-md-2 text-white">
+                    <h2 class="col text-center text-md-end fs-1">{{ region.name }}</h2>
+                    <p class="col text-center text-md-start">{{ region.description }}</p>
+                </div>
+            </div>
+        </div>
+        
+        
+<div class="container text-center" style="padding-top: 70px;">
+    <div class="row row-cols-3 gy-4">
+        {% for regionplace in regionplaces %}
+            <div class="col">
+                <div class="card">
+                    <div id="images-carousel-{{loop.index}}" class="carousel slide">
+                        <div class="carousel-inner ratio ratio-16x9">
+                    {% if regionplace.url %}
+                        {% for image in regionplace.url %}
+                        <div class="carousel-item {% if loop.first %} active {% endif %}">
+                            <img src="{{ image }}" class="d-block w-100 h-100 object-fit-cover" alt="{{ name }}">
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#images-carousel-{{loop.index}}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#images-carousel-{{loop.index}}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ regionplace.name }} </h5>
+                        <p class="card-text text-truncate">{{ regionplace.description }}</p>
+                        <a href="/regionplace/{{regionplace.id}}/" class="btn btn-primary">Открыть</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

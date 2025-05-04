@@ -1,0 +1,179 @@
+
+
+
+
+
+
+
+
+
+
+{% extends 'base.html' %}
+{% from 'macroses.html' import place as PlaceMacro %}
+
+{% block page %}
+<head>
+    <title>Места</title>
+    <style>
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+        .left-panel {
+            width: 40%;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 15px;
+        }
+        .map-panel {
+            flex-grow: 1;
+            padding: 15px;
+        }
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .card img {
+            object-fit: cover;
+            height: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .left-panel, .map-panel {
+                width: 100%;
+                padding: 10px;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div class="left-panel">
+        <h1>Места</h1>
+        <div class="places-grid">
+            {% for regionplace in regionplaces %}
+                <div class="card">
+                    <div id="images-carousel-{{ loop.index }}" class="carousel slide">
+                        <div class="carousel-inner ratio ratio-16x9">
+                            {% for image in regionplace.url %}
+                                <div class="carousel-item {% if loop.first %} active {% endif %}">
+                                    <img src="{{ image }}" class="d-block w-100 h-100" alt="{{ place.name }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#images-carousel-{{ loop.index }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#images-carousel-{{ loop.index }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ regionplace.name }}</h5>
+                        <form action="/add_to_visit/{{ regionplace.id }}/" method="POST">
+                            <button type="submit" class="btn btn-primary">Добавить</button>
+                        </form>
+                        <a href="/place/{{ regionplace.id }}/" class="btn btn-secondary">Открыть</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="map-panel">
+        <a href="{{ url_for('clear_session') }}">Очистить сессию</a><br>
+        {% for regionplace in visited_places %}
+            {{regionplace.name}}<br>
+            {{regionplace.latitude}}, {{regionplace.longitude}}<br>
+        {% endfor %}
+        <div id="map" style="width: 100%; height: 500px;"></div>
+    </div>
+</div>
+
+<script>
+    const myAPIKey = "1ad90f2bfcbc4965a0c387f38c33b8a0";
+    const waypoints = [
+        {% for regionplace in visited_places %}
+            [{{regionplace.latitude}},{{regionplace.longitude}}],
+        {% endfor %}
+    ];
+
+    const url = `https://api.geoapify.com/v1/routing?waypoints=${waypoints.map((point) => point.join(',')).join('|')}&mode=drive&details=instruction_details&apiKey=${myAPIKey}`;
+
+    async function initMap() {
+        await ymaps3.ready;
+        const {YMap, YMapDefaultSchemeLayer, YMapFeature, YMapDefaultFeaturesLayer} = ymaps3;
+
+        const map = new YMap(document.getElementById('map'), {
+            location: {
+                center: [{% if visited_places[0] %} {{visited_places[0].longitude}}, {{visited_places[0].latitude}} {% else %}37.588144, 55.733842{% endif %}],
+                zoom: 10
+            }
+        });
+
+        map.addChild(new YMapDefaultSchemeLayer());
+        map.addChild(new YMapDefaultFeaturesLayer());
+        return map;
+    }
+
+    fetch(url)
+        .then(res => res.json())
+        .then(async (result) => {
+            const map = await initMap();
+            const {YMapFeature} = ymaps3;
+            const style = { stroke: [{color: '#196dff', width: 3}] };
+
+            result.features.forEach((feature) => {
+                const _feature = new YMapFeature({
+                    geometry: feature.geometry,
+                    style,
+                });
+                map.addChild(_feature);
+            });
+        })
+        .catch(error => console.log(error));
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

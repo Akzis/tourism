@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for c in country %}
+        <h1>
+            {{ c.name }} ({{ c.id }})
+
+            {% for p in c.places %}
+                <h2>
+                    {{ p.name }} ({{ p.id }})
+                </h2>
+
+                <p>
+                    {{ p.description }}
+                </p>
+            {% endfor %}
+        </h1>
+        <hr>
+    {% endfor %}
+</body>
+</html>

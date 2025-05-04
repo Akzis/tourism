@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+
+{% block page %}
+  <!-- <div class="section-overlay"></div> -->
+      <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% for image in all_place_images %}
+            <div class="carousel-item  {% if loop.first %} active {% endif %} place-image-carousel-slide" style="height: 500px;">
+              <img src="{{ image.url }}" class="d-block w-100" alt="" style="height: 100%; object-fit: cover;">
+              <h1>Добро пожаловать на сайт по туризму</h1>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+
+
+      <div class="textcenter">
+        <div class="countries-container">
+          <a href="/russia/" class="country-card" style="margin-top: 20px;">
+            <div>
+              <div class="flip" style='height: 220px;'>
+                <div class="front" style="background-image: url(https://7d9e88a8-f178-4098-bea5-48d960920605.selcdn.net/655be867-da22-4c89-909e-8311a98e3a1b/-/format/webp/-/resize/1300x/); height: 220px">
+                  <h1 class="text-shadow">Россия</h1>
+                </div>
+                <div class="back">
+                  <h2>Россия</h2>
+                  <p class="col text-center text-md-start">Россия — страна, расположенная на двух континентах, в Восточной Европе и Северной Азии. Самая большая страна в мире — 17 125 422 кв. км или 1/9 от общей площади суши Земли. Она в два раза больше, чем вторая по величине страна — Канада.</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+</a>
+
+<!-- horizontal -->
+<div class="textcenter">
+  <h1>Азия</h1>
+  <div class="countries-container">
+    {% for country in countries %}
+        {% if country['side_of_the_world'] == "Asia" %}
+        <a href="/country/{{country.id}}/" class="country-card">
+            <div>
+                <div class="flip" style='height: 220px;'>
+                    <div class="front" style="background-image: url({{ country.image }}); height: 220px">
+                        <h1 class="text-shadow">{{ country['name'] }}</h1>
+                    </div>
+                    <div class="back">
+                        <h2>{{ country['name'] }}</h2>
+                        <p class="col text-center text-md-start">{{ country.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- horizontal -->
+<div class="textcenter">
+  <h1>Европа</h1>
+  <div class="countries-container">
+    {% for country in countries %}
+        {% if country['side_of_the_world'] == "Europe" %}
+        <a href="/country/{{country.id}}/" class="country-card">
+            <div>
+                <div class="flip" style='height: 220px;'>
+                    <div class="front" style="background-image: url({{ country.image }}) ; height: 220px">
+                        <h1 class="text-shadow">{{ country['name'] }}</h1>
+                    </div>
+                    <div class="back">
+                        <h2>{{ country['name'] }}</h2>
+                        <p class="col text-center text-md-start">{{ country.description }}</p>
+                    </div>
+                </div>
+            </div>
+            
+        </a>
+        
+        {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- horizontal -->
+<div class="textcenter">
+  <h1>Северная Америка</h1>
+  <div class="countries-container">
+    {% for country in countries %}
+        {% if country['side_of_the_world'] == "North America" %}
+        <a href="/country/{{country.id}}/" class="country-card">
+            <div>
+                <div class="flip" style='height: 220px;'>
+                    <div class="front" style="background-image: url({{ country.image }}); height: 220px">
+                        <h1 class="text-shadow">{{ country['name'] }}</h1>
+                    </div>
+                    <div class="back">
+                        <h2>{{ country['name'] }}</h2>
+                        <p class="col text-center text-md-start">{{ country.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- horizontal -->
+<div class="textcenter">
+  <h1>Южная Америка</h1>
+  <div class="countries-container">
+    {% for country in countries %}
+        {% if country['side_of_the_world'] == "South America" %}
+        <a href="/country/{{country.id}}/" class="country-card">
+            <div>
+                <div class="flip" style='height: 220px;'>
+                    <div class="front" style="background-image: url({{ country.image }}); height: 220px">
+                        <h1 class="text-shadow">{{ country['name'] }}</h1>
+                    </div>
+                    <div class="back">
+                        <h2>{{ country['name'] }}</h2>
+                        <p class="col text-center text-md-start">{{ country.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        {% endif %}
+    {% endfor %}
+  </div>
+</div>
+<!-- horizontal -->
+<div class="textcenter">
+  <h1>Австралия и Океания</h1>
+  <div class="countries-container">
+    {% for country in countries %}
+        {% if country['side_of_the_world'] == "Australia and Oceania" %}
+        <a href="/country/{{country.id}}/" class="country-card">
+            <div>
+                <div class="flip" style='height: 220px;'>
+                    <div class="front" style="background-image: url({{ country.image }}); height: 220px">
+                        <h1 class="text-shadow">{{ country['name'] }}</h1>
+                    </div>
+                    <div class="back">
+                        <h2>{{ country['name'] }}</h2>
+                        <p class="col text-center text-md-start">{{ country.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- horizontal -->
+<div class="textcenter">
+  <h1>Африка</h1>
+  <div class="countries-container">
+    {% for country in countries %}
+        {% if country['side_of_the_world'] == "Africa" %}
+        <a href="/country/{{country.id}}/" class="country-card">
+            <div>
+                <div class="flip" style='height: 220px;'>
+                    <div class="front" style="background-image: url({{ country.image }}); height: 220px">
+                        <h1 class="text-shadow">{{ country['name'] }}</h1>
+                    </div>
+                    <div class="back">
+                        <h2>{{ country['name'] }}</h2>
+                        <p class="col text-center text-md-start">{{ country.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+
+          <div style="padding: 90px;"></div>
+            <div class="button-container">
+  
+              <div class="glass-but blue-but">
+                <!--<div class="content">
+                  h
+                </div> -->
+                <img src="https://i.postimg.cc/DwbWDQTx/facebook.png" alt="facebook" style="width: 5.5em;">
+              </div>
+            
+              <div class="glass-but red-but">
+                <!-- <div class="content">
+                  e
+                </div> -->
+                <img src="https://i.postimg.cc/LstJ4Hhf/youtube.png" alt="youtube" style="width: 6em;">
+              </div>
+              
+              <div class="glass-but amber-but">
+                <!-- <div class="content">
+                  y
+                </div> -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/1200px-GitHub_Invertocat_Logo.svg.png" alt="GitHub" style="width: 3.3em;">
+              </div>
+            
+            </div>
+          </div>
+
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% from 'macroses.html' import place as PlaceMacro %}
+
+{% block page %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> 
+
+    <style>
+        .section {
+            background-size: cover;
+            background-position: center center;
+            padding: 90px;
+            position: relative;
+        }
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+        
+        h1 {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .buttonrus {
+            background-color: rgb(0, 0, 0);
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 20px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .buttonrus:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
+
+    <div class="section" style="background-image: url(https://7d9e88a8-f178-4098-bea5-48d960920605.selcdn.net/655be867-da22-4c89-909e-8311a98e3a1b/-/format/webp/-/resize/1300x/);">
+        <div class="container z-2 position-relative">
+            <div class="row row-cols-1 row-cols-md-2 text-white">
+                <h2 class="col text-center text-md-end fs-1">Россия</h2>
+                <p class="col text-center text-md-start">Россия — страна, расположенная на двух континентах, в Восточной Европе и Северной Азии. Самая большая страна в мире — 17 125 422 кв. км или 1/9 от общей площади суши Земли. Она в два раза больше, чем вторая по величине страна — Канада.</p>
+            </div>
+        </div>
+    </div>
+
+    <h1>Выберите регион России:</h1>
+
+
+      <div class="textcenter">
+        <div class="countries-container">
+            {% for region in regions %}
+              <a href="/region/{{ region.id }}/" class="country-card">
+                  <div>
+                      <div class="flip" style='height: 220px;'>
+                          <div class="front" style="background-image: url({{ region.image }}); height: 220px">
+                              <h1 class="text-shadow">{{ region['name'] }}</h1>
+                          </div>
+                          <div class="back">
+                              <h2>{{ region['name'] }}</h2>
+                              <p class="col text-center text-md-start">{{ region.description }}</p>
+                          </div>
+                      </div>
+                  </div>
+              </a>
+          {% endfor %}
+        </div>
+      </div>
+{% endblock %}

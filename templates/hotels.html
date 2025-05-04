@@ -1,0 +1,54 @@
+<head>
+    <script src="https://api-maps.yandex.ru/v3/?apikey=a24491d9-0cde-46d5-aa70-07ed380b2649&lang=ru_RU"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=a24491d9-0cde-46d5-aa70-07ed380b2649&lang=ru_RU"></script>
+
+
+
+{% for hotel in hotels %}
+    <h4>{{ hotel.name }} - {{ hotel.location }} {{ hotel.id }}</h4>
+{% endfor %}
+
+
+<script>
+    ymaps.ready(init);
+    function init(){     
+        var myMap = new ymaps.Map ('myMap', {
+            center: [54.699771, 20.505330],
+            zoom: 10
+        });
+
+        let route = ymaps.route([
+            //{% for hotel in hotels %}
+            //    [{{ hotel.location['lat'] }}, {{ hotel.location['lon'] }}],
+            //{% endfor %}
+             'Кронштадт, Якорная площадь',
+             {
+                 type: 'viaPoint',
+                 point: [60.93328,30.342791]// или 'Аничков мост'
+             },
+             [59.956084, 30.356849]// или [59.956084, 30.356849]'Санкт-Петербург, Финляндский вокзал'
+        ]).then(
+            function (route) {
+                myMap.geoObjects.add(route);
+
+                var routeLength = route.getLength(); // Длина маршрута
+                var firstPath = route.getPaths().get(0); // Первый путь
+
+                var firstPathLength = firstPath.getLength(); // Длина первого пути
+                var firtstPathTime = firstPath.getTime(); // Время без учета пробок 
+                var firstPathFirstSegment = firstPath.getSegments()[0];// Первый сегмент первого пути
+                var firstPathFirstSegmentJamsTime =  firstPathFirstSegment.getJamsTime();// Время с пробками
+
+            },
+            function (error) {
+                alert("Возникла ошибка: " + error.message);
+            },
+        );
+    }
+</script>
+<body>
+    <div id="myMap" style="width: 600px; height: 400px"></div>
+</body>
+
+
+</head>
