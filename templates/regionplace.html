@@ -34,9 +34,9 @@
             </div>
         </div>
     </div>
-    {{ regionplace.name }} - Лайков: {{ get_place_likes_count(regionplace.id) }}
+    {{ regionplace.name }} - Лайков: {{ get_place_likes_count_russia(regionplace.id) }}
     {% if 'user_id' in session %}
-      <form action="{{ url_for('users_blueprint.toggle_like', place_id=regionplace.id) }}" method="POST">
+      <form action="{{ url_for('users_blueprint.toggle_like_russia', regionplace_id=regionplace.id) }}" method="POST">
           <button type="submit" {%if is_liked %}disabled=""{% endif %}>Поставить лайк</button>
           {{is_liked}}
       </form>

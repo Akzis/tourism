@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 
 {% block page %}
+
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="container text-center">
+    <div class="flash-messages">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+{% endwith %}
+
+
 <div class="container d-flex justify-content-center align-items-center" style="height: 55vh;">
     <div class="row row-cols-1">
         <div class="col text-center">

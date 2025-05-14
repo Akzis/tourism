@@ -47,9 +47,21 @@
             </div>
         </div>
         
+        <form method="get" class="text-center my-4">
+            <label for="city">Фильтр по городу:</label>
+            <select name="city" id="city" onchange="this.form.submit()">
+                <option value="">Все города</option>
+                {% for c in cities %}
+                    <option value="{{ c.city }}" {% if selected_city == c.city %}selected{% endif %}>
+                        {{ c.city }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
         
+
 <div class="container text-center" style="padding-top: 70px;">
-    <div class="row row-cols-3 gy-4">
+    <div class="row row-cols-1 row-cols-md-3 gy-4">
         {% for regionplace in regionplaces %}
             <div class="col">
                 <div class="card">

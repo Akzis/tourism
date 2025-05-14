@@ -78,6 +78,7 @@ class RegionPlace(db.Model):
     longitude = peewee.FloatField()
     name = peewee.CharField()
     description = peewee.CharField()
+    city = peewee.CharField()
     region_id = peewee.ForeignKeyField(Region)
 
 class RegionPlaceImage(db.Model):
@@ -122,7 +123,11 @@ class Like(db.Model):
 
     
     
-    
+class LikeRussia(db.Model):
+    id = peewee.PrimaryKeyField()
+    user_id = peewee.ForeignKeyField(User)
+    regionplace_id = peewee.ForeignKeyField(RegionPlace)
+    likes = IntegerField(default=0)
     
     
 

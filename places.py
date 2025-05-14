@@ -3,7 +3,7 @@ from models import Place, PlaceImage, Country, Region, RegionPlace, RegionPlaceI
 import peewee
 import requests
 
-from wether import fetch_weather_data
+from weather import fetch_weather_data
 
 places_blueprint = Blueprint('places_blueprint', __name__, url_prefix=None)
 
@@ -66,7 +66,9 @@ def add_to_visit(place_id):
     
     print(session['visited_places_id'])
 
-    return redirect('/countrysearch/')
+    # return redirect('/countrysearch/')
+    return redirect(request.referrer or '/countrysearch/')  # Перенаправление обратно на текущую страницу
+
 
 
 

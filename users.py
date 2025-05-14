@@ -9,14 +9,23 @@ users_blueprint = Blueprint('users_blueprint', __name__)
 @users_blueprint.route('/profil')
 def profil():
     if 'user_id' in session:
-        user = User.get(User.id == session['user_id'])
-        
-        liked_places = Like.select().where(Like.user_id == user.id, Like.likes == 1)
+        try:
+            user = User.get(User.id == session['user_id'])
+            liked_places = (
+                Place.select()
+                .join(Like)
+                .where(Like.user_id == user.id)
+            )
+            liked_places_russia = (
+                RegionPlace.select()
+                .join(LikeRussia)
+                .where(LikeRussia.user_id == user.id)
+            )
+            return render_template('profil.html', user=user, liked_places=liked_places, liked_places_russia=liked_places_russia)
+        except User.DoesNotExist:
 
-        for place in liked_places:
-            print(place)
-        
-        return render_template('profil.html', user=user)
+            flash('Пользователь не найден.')
+            return redirect(url_for('users_blueprint.login'))
     return redirect(url_for('users_blueprint.login'))
 
 
@@ -29,11 +38,12 @@ def login():
         try:
             user = User.get(User.username == username)
             if user.check_password(password):
-                session['user_id'] = user.id
+                session['user_id'] = user.id  
                 return redirect(url_for('users_blueprint.profil'))
         except User.DoesNotExist:
-            pass
+            flash('Неверное имя пользователя или пароль')
     return render_template('login.html')
+
 
 @users_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
@@ -78,3 +88,35 @@ def toggle_like(place_id):
         Like.create(place_id=place_id, user_id = user_id)
     
     return redirect(f'/place/{place_id}/')
+
+
+
+
+
+
+
+
+def get_place_likes_count_russia(regionplace_id):
+    return LikeRussia.select().where(LikeRussia.regionplace_id==regionplace_id).count()
+
+@users_blueprint.app_context_processor
+def inject_place_likes_count_russia():
+    return { 'get_place_likes_count_russia': get_place_likes_count_russia }
+
+@users_blueprint.route('/like_russia/')
+def like_russia():
+    return {}
+
+@users_blueprint.route('/like_russia/<int:regionplace_id>/', methods=['POST'])
+def toggle_like_russia(regionplace_id):
+    user_id = session['user_id']
+
+    is_liked = LikeRussia.select().where(LikeRussia.user_id==user_id, LikeRussia.regionplace_id==regionplace_id).exists()
+   
+    if (is_liked):
+        LikeRussia.get(LikeRussia.user_id == user_id, LikeRussia.regionplace_id == regionplace_id).delete_instance()
+        # Like.select(Like.user_id==user_id, place_id == place_id).delete_instance()
+    else:
+        LikeRussia.create(regionplace_id=regionplace_id, user_id = user_id)
+    
+    return redirect(f'/regionplace/{regionplace_id}/')

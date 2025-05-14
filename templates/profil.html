@@ -4,14 +4,35 @@
 {% from 'macroses.html' import place as PlaceMacro %}
 
 
-<h1>Здравствуй пользователь<h1/>
+<h1>Добро пожаловать, {{ user.username }}!</h1>
      <a class="nav-link" href="{{ url_for('users_blueprint.logout') }}">Logout</a>
 
 
 
 
-<h2>Лайкнутые места</h2>
-{# <h4>{{ like.place_id }}</h4> #}
+<h2>Понравившееся места</h2>
+
+<ul>
+  {% for place in liked_places %}
+    <li>
+      <h4>{{ place.name }}</h4>
+      <a href="/place/{{ place.id }}/">Подробнее</a>
+    </li>
+    {%for regionplace in liked_places_russia%}
+    <li>
+      <h4>{{ regionplace.name }}</h4>
+      <a href="/regionplace/{{ regionplace.id }}/">Подробнее</a>
+    </li>
+    {% endfor %}
+    
+  {% else %}
+    <li>Нет понравившихся мест.</li>
+  {% endfor %}
+</ul>
+
+
+
+
 
 
 {% endblock %}

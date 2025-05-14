@@ -513,6 +513,7 @@ regionplace1 = RegionPlace.create(
     description="Мамаев курган — мемориальный комплекс в Волгограде, посвящённый героям Сталинградской битвы. Главной достопримечательностью является статуя 'Родина-мать зовёт!', одна из самых высоких в мире. Комплекс включает в себя несколько мемориалов, музей и аллею славы.",
     latitude=48.7433,
     longitude=44.5378,
+    city="Волгоград",
     region_id=region1.id
 )
 RegionPlaceImage.create(
@@ -520,104 +521,46 @@ RegionPlaceImage.create(
     regionplace_id=regionplace1.id,
 )
 
-regionplace2 = RegionPlace.create(
-    name="Адмиралтейская набережная",
-    description="Адмиралтейская набережная в Воронеже — популярное место отдыха на берегу водохранилища. Здесь проходят фестивали, гуляют семьи и молодёжь, а с набережной открывается красивый вид на город. Это одна из визитных карточек Воронежа.",
-    latitude=51.6615,
-    longitude=39.2003,
-    region_id=region2.id
-)
-RegionPlaceImage.create(
-    url="https://avatars.mds.yandex.net/i?id=f49368f11886d540a0912f7d87de065717ce9615-4055859-images-thumbs&n=13",
-    regionplace_id=regionplace2.id,
-)
-regionplace3 = RegionPlace.create(
-    name="Курская Коренная пустынь",
-    description="Курская Коренная пустынь — древний православный монастырь, расположенный в живописной лесистой местности. Основан в XIII веке, он стал духовным центром региона и ежегодно привлекает паломников и туристов со всей России.",
-    latitude=51.7150,
-    longitude=36.1676,
-    region_id=region3.id
-)
-RegionPlaceImage.create(
-    url="https://yandex-images.clstorage.net/RmqM53130/67c0e0jVIz/hOD47YPuVxNHoZFfJN8PLRAqys5uMzl3tV5p22QgjDLIXOx0dWwQw8k_wE1NF42sT9ntlk0P-Dnb-skGHsFFZMbluKHEpU9LFuCICyzcCi8Nd4nfcmk9Kq8cNdAhL9Ztz1yDHQcUZqm2Vb85PWCSqxSMsd1aSr4E4ruxN0LTPiSj0uHKhu8xCEi30GUz6xs_OULU50BWFju7QCTvAU7WIJs8kS4KIWGFlVKvFCR9rYI2sq7RIkmpIfTTqzFmxhY1m_fI4IjrECRCvdJnEeIECSJRx-5icDQAl2se9wRO1j-RLLopDiBHnKBSgz0yYrytEo-V1z1vvizy0J8jR-0rKqL03_6DyRcySbrFdCbFCSAdbNbvSl0CHbBjNtQ2dfkYmievJTIbYJ2MbpAIOkCPpTWwnsIkSoE81c6lFkn2Dz-bwOfJidIxN2W683EK1CAqIEXF20NRNSKQXwDIA2DtIrUNvyUeNm2ArlWkHwNGiaw3v4TGEECCFdroujFC7Q43uuPa9YfeMwZvntNFPcczKwxQ7f5jSAQYnnggxARn1imQBZ8rEgZ8hYF0nwQzSai9LqWF1BNPgi_r76okQsQpB6vK68i60B0zQLb4SQH5DQIbV8fdS0s-PJ9iIfoiUe8JlzyoCw0DY5uTVKELDUOJvSCBmMcNXI8hxeiLFmzICCaexuX5gf4zP2Gh1Vcz8AwsHVTD7UhaNCemVhf_MEDwKrAEvw8tO0GmjHWSNyFsnJ0Oj6XtLX6nLvzpty178B8zmvDY5rLZNhxvufZuFcAHIQJo_sdVdBIfr0oB1j9Z9BezP7QNKwZ0nZhDsQQef4OIC5uMyTtRviLX36o2S9oECJrs-ua91j4JapnIXBfnKCYAUcfJW04dCpBpAdYwYdA8vBylOBEiR7C9a74fN1SggRORs_EOS6wM1-GPFFjqLBq36fbtsNY-Fm2k-U4U5RgHPk7p31tuMxKfajz6OGI",
-    regionplace_id=regionplace3.id,
-)
-regionplace4 = RegionPlace.create(
-    name="Белгородская диорама",
-    description="Диорама 'Курская битва. Белгородское направление' — крупнейшая в России диорама, посвящённая одному из крупнейших танковых сражений Второй мировой войны. Экспозиция включает панораму, военную технику и интерактивные выставки.",
-    latitude=50.5954,
-    longitude=36.5870,
-    region_id=region4.id
-)
-RegionPlaceImage.create(
-    url="https://avatars.mds.yandex.net/i?id=947e2207ef3df76076c3b611856bf04013ec0535-5701876-images-thumbs&n=13",
-    regionplace_id=regionplace4.id,
-)
-regionplace5 = RegionPlace.create(
-    name="Брянский лес",
-    description="Брянский лес — биосферный заповедник с уникальной флорой и фауной. Здесь обитают редкие животные, в том числе зубры, и произрастают древние леса. Место идеально подходит для экотуризма и научных исследований.",
-    latitude=52.5061,
-    longitude=33.7312,
-    region_id=region5.id
-)
-RegionPlaceImage.create(
-    url="https://avatars.mds.yandex.net/i?id=ff7021949c3cd1340dae646e47b261f8295cbeb9-5086991-images-thumbs&n=13",
-    regionplace_id=regionplace5.id,
-)
-regionplace6 = RegionPlace.create(
-    name="Успенский собор",
-    description="Успенский собор во Владимире — один из важнейших памятников древнерусской архитектуры, построен в XII веке. Здесь сохранились фрески Андрея Рублёва. Собор входит в список Всемирного наследия ЮНЕСКО.",
-    latitude=56.1282,
-    longitude=40.4070,
-    region_id=region6.id
-)
-RegionPlaceImage.create(
-    url="https://avatars.mds.yandex.net/i?id=5e265b8108541bb57fa52a3a72aae74950fe7c85-4841402-images-thumbs&n=13",
-    regionplace_id=regionplace6.id,
-)
-regionplace7 = RegionPlace.create(
-    name="Калужский планетарий",
-    description="Калужский планетарий — старейший планетарий России, расположенный в городе, считающемся колыбелью отечественной космонавтики. Здесь можно познакомиться с историей звёзд и космических исследований.",
-    latitude=54.5088,
-    longitude=36.2527,
-    region_id=region7.id
-)
-RegionPlaceImage.create(
-    url="https://avatars.mds.yandex.net/i?id=637459623bcb68b6fea1c7684804491a9a79fb8c-5211479-images-thumbs&n=13",
-    regionplace_id=regionplace7.id,
-)
-regionplace8 = RegionPlace.create(
-    name="Липецкие минеральные источники",
-    description="Минеральные источники в Липецке — курортная зона с лечебными водами, известными ещё с XVIII века. Здесь расположен санаторий, парк, питьевая галерея и фонтан, образующие уникальный природно-оздоровительный комплекс.",
-    latitude=52.6104,
-    longitude=39.5946,
-    region_id=region8.id
-)
-RegionPlaceImage.create(
-    url="https://avatars.mds.yandex.net/i?id=f9d40806a1daece75ea16e218b2d7879ef8e45a2-8494143-images-thumbs&n=13",
-    regionplace_id=regionplace8.id,
-)
-regionplace9 = RegionPlace.create(
-    name="Орловский краеведческий музей",
-    description="Орловский краеведческий музей — один из старейших музеев региона, основанный в XIX веке. Экспозиция охватывает природу, археологию, этнографию и историю Орловской земли от древности до современности.",
-    latitude=52.9688,
-    longitude=36.0696,
-    region_id=region9.id
-)
-RegionPlaceImage.create(
-    url="https://avatars.mds.yandex.net/i?id=a087448c8e95ef142bc3fedd82b6f2c8ede01f5ed7d04cfb-12714748-images-thumbs&n=13",
-    regionplace_id=regionplace9.id,
-)
 regionplace10 = RegionPlace.create(
-    name="Тульский кремль",
-    description="Тульский кремль — историческая крепость XVI века, расположенная в центре Тулы. Внутри находятся музеи, храмы и сувенирные лавки. Это один из самых посещаемых туристических объектов в Центральной России.",
-    latitude=54.1951,
-    longitude=37.6183,
+    name="Форт № 11 Денхофф",
+    description="Отлично сохранившийся форт, построенный в 1877-1881 гг. Один из 15, окружавших город-крепость Кёнигсберг. До недавнего времени - воинская часть, теперь передан для сохранения и использования в культурно-познавательных целях в частные руки. Удивляет сохранность всего строения и его механизмов.",
+    latitude=54.65671888684857,
+    longitude=20.567682966989747,
+    city="Калининград",
     region_id=region10.id
 )
 RegionPlaceImage.create(
-    url="https://avatars.mds.yandex.net/i?id=3e56ebb9c1ab84259a355056f24a13fbdc903598-4354006-images-thumbs&n=13",
+    url="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/87/9d/86/11.jpg?w=700&h=400&s=1",
     regionplace_id=regionplace10.id,
 )
+
+
+regionplace11 = RegionPlace.create(
+    name="Водонапорная башня Раушена",
+    description="Водонапорная башня Светлогорска(Раушена) и примыкающий к ней ротондальный корпус водогрязелечебницы были построены в 1908г.",
+    latitude=54.94331136968009,
+    longitude=20.154467491569296,
+    city="Светлогорск",
+    region_id=region10.id
+)
+RegionPlaceImage.create(
+    url="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/9c/94/0c/photo1jpg.jpg?w=700&h=400&s=1",
+    regionplace_id=regionplace11.id,
+)
+
+
+regionplace12 = RegionPlace.create(
+    name="Кафедральный Собор",
+    description="Водонапорная башня Светлогорска(Раушена) и примыкающий к ней ротондальный корпус водогрязелечебницы были построены в 1908г.",
+    latitude=54.706380300537376,
+    longitude=20.51205742911386,
+    city="Калининград",
+    region_id=region10.id
+)
+RegionPlaceImage.create(
+    url="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/ab/51/dd/caption.jpg?w=1000&h=-1&s=1",
+    regionplace_id=regionplace12.id,
+)
+
 
 # конец --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

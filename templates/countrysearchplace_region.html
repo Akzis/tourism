@@ -56,6 +56,9 @@
 <body>
 <div class="main-container">
     <div class="left-panel">
+        <div style="padding-bottom: 9px;">
+        <a class="btn btn-primary" href="/countrysearchplace/russia/">Назад</a>
+        </div>
         <h1>Места</h1>
         <div class="places-grid">
             {% for regionplace in regionplaces %}
@@ -82,7 +85,7 @@
                         <form action="/add_to_visit/{{ regionplace.id }}/" method="POST">
                             <button type="submit" class="btn btn-primary">Добавить</button>
                         </form>
-                        <a href="/place/{{ regionplace.id }}/" class="btn btn-secondary">Открыть</a>
+                        <a href="/regionplace/{{ regionplace.id }}/" class="btn btn-secondary">Открыть</a>
                     </div>
                 </div>
             {% endfor %}

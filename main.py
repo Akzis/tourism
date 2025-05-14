@@ -258,13 +258,19 @@ def countrysearch():
         Place.longitude,
         Place.id)
     
-    if ('visited_places_id' in session):
+    visited_places = []
+    route_url = None
+
+    if 'visited_places_id' in session:
         visited_places = Place.select().where(Place.id << session['visited_places_id'])
-    else:
-        visited_places = []
+        coords = [(places.latitude, places.longitude) for places in visited_places]
+        if coords:
+            route_points = "~".join([f"{lat},{lon}" for lat, lon in coords])
+            route_url = f"https://yandex.ru/maps/?rtext={route_points}&rtt=auto"
 
 
-    return render_template('searchcountry.html', countries=countries, places = places, visited_places=visited_places)
+
+    return render_template('searchcountry.html', countries=countries, places = places, visited_places=visited_places, route_url=route_url)
 
 
 # @app.route('/logout_admin/', methods=["POST"])
@@ -302,19 +308,39 @@ def countrysearchplace(countrysearch_id):
 def countrysearchplace_russia():
     countries = Country.select()
     regions = Region.select()
-
     regionplaces = RegionPlace.select(
         RegionPlace.name,
+        RegionPlace.description,
         RegionPlace.id,
-        RegionPlace.latitude,
-        RegionPlace.longitude,)
-        
-    if ('visited_places_id' in session):
-        visited_places = RegionPlace.select().where(RegionPlace.id << session['visited_places_id'])
-    else:
-        visited_places = []
+        peewee.fn.GROUP_CONCAT(RegionPlaceImage.url).alias('url'),
+        RegionPlace.region_id
+    ).join(RegionPlaceImage, peewee.JOIN.LEFT_OUTER).objects().group_by(RegionPlace)
 
-    return render_template('countrysearchplace_russia.html', countries=countries, regionplaces = regionplaces, visited_places=visited_places, regions = regions)
+
+
+    for regionplace in regionplaces:
+        if (regionplace.url):
+            regionplace.url = regionplace.url.split(",")
+
+    visited_places = []
+    route_url = None
+
+    if 'visited_places_id' in session:
+        visited_places = RegionPlace.select().where(RegionPlace.id << session['visited_places_id'])
+        coords = [(regionplaces.latitude, regionplaces.longitude) for regionplaces in visited_places]
+        if coords:
+            route_points = "~".join([f"{lat},{lon}" for lat, lon in coords])
+            route_url = f"https://yandex.ru/maps/?rtext={route_points}&rtt=auto"
+
+    return render_template(
+        'countrysearchplace_russia.html',
+        countries=countries,
+        regionplaces=regionplaces,
+        visited_places=visited_places,
+        regions=regions,
+        route_url=route_url
+    )
+
 
 
 @app.route('/countrysearchplace/russia/<int:countrysearch_id>/')
@@ -402,6 +428,11 @@ def russia():
 @app.route('/region/<int:region_id>/')
 def region(region_id):
     region = Region.get_by_id(region_id)
+    city = request.args.get('city') 
+    cities = (RegionPlace
+            .select(RegionPlace.city)
+            .where(RegionPlace.region_id == region_id)
+            .distinct())
 
     regionplaces = RegionPlace.select(
         RegionPlace.name,
@@ -411,18 +442,16 @@ def region(region_id):
         RegionPlace.region_id
     ).join(RegionPlaceImage, peewee.JOIN.LEFT_OUTER).objects().group_by(RegionPlace).where(RegionPlace.region_id==region_id)
 
+
+    if city:
+        regionplaces = regionplaces.where(RegionPlace.city == city)
+
     for regionplace in regionplaces:
         if (regionplace.url):
             regionplace.url = regionplace.url.split(",")
 
-    # places = Place.select(
-    #     Place.name,
-    #     Place.description,
-    #     Place.id,
-    #     Place.country_id
-    # ).join(PlaceImage).where(Place.country_id == country_id)
         
-    return render_template('region.html', region = region, regionplaces = regionplaces)
+    return render_template('region.html', region = region, regionplaces = regionplaces, cities=cities, selected_city=city)
 
 
 
@@ -432,7 +461,7 @@ def region(region_id):
 
 if (__name__ == "__main__"):   
     try:
-        db.create_tables([Country, Place, PlaceImage, Request, Like, User, Region, RegionPlace, RegionPlaceImage])
+        db.create_tables([Country, Place, PlaceImage, Request, Like, User, Region, RegionPlace, RegionPlaceImage, LikeRussia])
     except:
         pass
     
@@ -449,6 +478,7 @@ if (__name__ == "__main__"):
     admin.add_view(BaseModelView(Region))
     admin.add_view(BaseModelView(RegionPlace))
     admin.add_view(BaseModelView(RegionPlaceImage))
+    admin.add_view(BaseModelView(LikeRussia))
     app.run(debug=True)
 
 
