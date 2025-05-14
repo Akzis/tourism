@@ -314,13 +314,10 @@ def countrysearchplace_russia():
         RegionPlace.id,
         peewee.fn.GROUP_CONCAT(RegionPlaceImage.url).alias('url'),
         RegionPlace.region_id
-    ).join(RegionPlaceImage, peewee.JOIN.LEFT_OUTER).objects().group_by(RegionPlace)
+    )
 
 
 
-    for regionplace in regionplaces:
-        if (regionplace.url):
-            regionplace.url = regionplace.url.split(",")
 
     visited_places = []
     route_url = None
@@ -338,7 +335,7 @@ def countrysearchplace_russia():
         regionplaces=regionplaces,
         visited_places=visited_places,
         regions=regions,
-        route_url=route_url
+
     )
 
 
@@ -348,16 +345,48 @@ def countrysearch_place_region(countrysearch_id):
     countries = Country.select()
     regions = Region.select()
     region = Region.get_by_id(countrysearch_id)
+    # regionplaces = RegionPlace.select(
+    #     RegionPlace.name,
+    #     RegionPlace.latitude,
+    #     RegionPlace.longitude,
+    #     RegionPlace.id,).where(RegionPlace.region_id == countrysearch_id)
+    
+
+
+
+
     regionplaces = RegionPlace.select(
         RegionPlace.name,
-        RegionPlace.latitude,
-        RegionPlace.longitude,
-        RegionPlace.id,).where(RegionPlace.region_id == countrysearch_id)
-    
+        RegionPlace.description,
+        RegionPlace.id,
+        peewee.fn.GROUP_CONCAT(RegionPlaceImage.url).alias('url'),
+        RegionPlace.region_id
+    ).join(RegionPlaceImage).objects().group_by(RegionPlace).where(RegionPlace.region_id==countrysearch_id)
+
+    for regionplace in regionplaces:
+        if (regionplace.url):
+            regionplace.url = regionplace.url.split(",")
+
+
+
     if ('visited_places_id' in session):
         visited_places = RegionPlace.select().where(RegionPlace.id << session['visited_places_id'])
     else:
         visited_places = []
+
+        
+    ## доделать
+    # visited_places = []
+    # route_url = None
+
+    # if 'visited_places_id' in session:
+    #     visited_places = RegionPlace.select().where(RegionPlace.id << session['visited_places_id'])
+    #     coords = [(regionplaces.latitude, regionplaces.longitude) for regionplaces in visited_places]
+    #     if coords:
+    #         route_points = "~".join([f"{lat},{lon}" for lat, lon in coords])
+    #         route_url = f"https://yandex.ru/maps/?rtext={route_points}&rtt=auto"
+
+
 
     return render_template('countrysearchplace_region.html', countries=countries, regionplaces = regionplaces, visited_places=visited_places,regions = regions)
 

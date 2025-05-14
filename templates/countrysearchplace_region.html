@@ -9,7 +9,7 @@
 
 
 {% extends 'base.html' %}
-{% from 'macroses.html' import place as PlaceMacro %}
+
 
 {% block page %}
 <head>
@@ -67,7 +67,7 @@
                         <div class="carousel-inner ratio ratio-16x9">
                             {% for image in regionplace.url %}
                                 <div class="carousel-item {% if loop.first %} active {% endif %}">
-                                    <img src="{{ image }}" class="d-block w-100 h-100" alt="{{ place.name }}">
+                                    <img src="{{ image }}" class="d-block w-100 h-100" alt="{{ regionplace.name }}">
                                 </div>
                             {% endfor %}
                         </div>
