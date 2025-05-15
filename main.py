@@ -295,13 +295,17 @@ def countrysearchplace(countrysearch_id):
     for place in places:
         place.url = place.url.split(",")
 
+    visited_places = []
+    route_url = None
 
-    if ('visited_places_id' in session):
+    if 'visited_places_id' in session:
         visited_places = Place.select().where(Place.id << session['visited_places_id'])
-    else:
-        visited_places = []
-
-    return render_template('countrysearchplace.html', countries=countries, places = places, visited_places=visited_places)
+        coords = [(places.latitude, places.longitude) for places in visited_places]
+        if coords:
+            route_points = "~".join([f"{lat},{lon}" for lat, lon in coords])
+            route_url = f"https://yandex.ru/maps/?rtext={route_points}&rtt=auto"
+            
+    return render_template('countrysearchplace.html', countries=countries, places = places, visited_places=visited_places, route_url=route_url)
 
 
 @app.route('/countrysearchplace/russia/')
@@ -335,6 +339,7 @@ def countrysearchplace_russia():
         regionplaces=regionplaces,
         visited_places=visited_places,
         regions=regions,
+        route_url=route_url
 
     )
 
@@ -369,26 +374,26 @@ def countrysearch_place_region(countrysearch_id):
 
 
 
-    if ('visited_places_id' in session):
-        visited_places = RegionPlace.select().where(RegionPlace.id << session['visited_places_id'])
-    else:
-        visited_places = []
+    # if ('visited_places_id' in session):
+    #     visited_places = RegionPlace.select().where(RegionPlace.id << session['visited_places_id'])
+    # else:
+    #     visited_places = []
 
         
-    ## доделать
-    # visited_places = []
-    # route_url = None
+    # ## доделать
+    visited_places = []
+    route_url = None
 
-    # if 'visited_places_id' in session:
-    #     visited_places = RegionPlace.select().where(RegionPlace.id << session['visited_places_id'])
-    #     coords = [(regionplaces.latitude, regionplaces.longitude) for regionplaces in visited_places]
-    #     if coords:
-    #         route_points = "~".join([f"{lat},{lon}" for lat, lon in coords])
-    #         route_url = f"https://yandex.ru/maps/?rtext={route_points}&rtt=auto"
+    if 'visited_places_id' in session:
+        visited_places = RegionPlace.select().where(RegionPlace.id << session['visited_places_id'])
+        coords = [(regionplaces.latitude, regionplaces.longitude) for regionplaces in visited_places]
+        if coords:
+            route_points = "~".join([f"{lat},{lon}" for lat, lon in coords])
+            route_url = f"https://yandex.ru/maps/?rtext={route_points}&rtt=auto"
 
 
 
-    return render_template('countrysearchplace_region.html', countries=countries, regionplaces = regionplaces, visited_places=visited_places,regions = regions)
+    return render_template('countrysearchplace_region.html', countries=countries, regionplaces = regionplaces, visited_places=visited_places,regions = regions, route_url=route_url)
 
 
 
